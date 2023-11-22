@@ -14,3 +14,8 @@ class EncodeQRCode:
             error_correction=qrcode.constants.ERROR_CORRECT_H
         )
         self.img_qr = None
+
+    def create_qrcode(self):
+        self.qr_instance.add_data(self.data)
+        self.qr_instance.make(fit=True)
+        self.img_qr = self.qr_instance.make_image(fill_color=self.fill_color, back_color=self.back_color)
