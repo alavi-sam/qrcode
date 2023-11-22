@@ -19,3 +19,9 @@ class EncodeQRCode:
         self.qr_instance.add_data(self.data)
         self.qr_instance.make(fit=True)
         self.img_qr = self.qr_instance.make_image(fill_color=self.fill_color, back_color=self.back_color)
+
+    def add_logo(self, logo_path, logo_size):
+        logo_img = Image.open(logo_path)
+        logo_img.thumbnail(size=(logo_size, logo_size))
+        logo_position = ((self.img_qr.size[0] - logo_size)//2, (self.img_qr.size[1] - logo_size)//2)
+        self.img_qr.paste(logo_img, logo_position)
