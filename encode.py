@@ -1,5 +1,9 @@
+import re
 import qrcode
 from PIL import Image
+import argparse
+
+from torch import R
 
 
 class EncodeQRCode:
@@ -29,14 +33,44 @@ class EncodeQRCode:
     def save(self):
         self.img_qr.save(self.path_name)
 
-data = {'text': 'this is a sample text', 'code': '1252'}
-fill_color = (74, 38, 40)
-back_color = (179, 194, 245)
 
-fill_hex = '#{:02x}{:02x}{:02x}'.format(*fill_color)
-back_hex = '#{:02x}{:02x}{:02x}'.format(*back_color)
+if __name__ == '__main__':
 
-qr = EncodeQRCode(path_name='test.jpg', data=data, box_size=100, border_size=20, fill_color=fill_hex, back_color=back_hex)
-qr.create_qrcode()
-qr.add_logo('facebook-logo.png', logo_size=100)
-qr.save()
+    parser = argparse.ArgumentParser(description='CLI commands for creating QR Code from user inputs')
+
+    parser.add_argument('--path', type=str, required=True, help='Enter a path for you QR Code to be saved.')
+    parser.add_argument('--data', type=all, required=True, help='Enter your QR Code data')
+    parser.add_argument('--box-size', type=int, required=False, help='QR Code box size')
+    parser.add_argument('--border-size', type=int, required=False, help='QR Code border size')
+    parser.add_argument('--fill-color', type=tuple, required=False, help='Pass a tuple containing RGB values for your QR Code content color')
+    parser.add_argument('--back-color', type=tuple, required=False, help='Pass a tuple containing RGB values for your QR Code backgrond color')
+    parser.add_argument('--logo-path', type=str, required=False, help='If you want to have a logo in your QR Code pass the logo path')
+    parser.add_argument('--logo-size', type=int, required=False, help='Input logo size the more little the logo the better QR Code')
+
+    args = parser.parse_args()
+
+
+    if not args.logo_path and args.logo_size:
+        parser.error('--logo-path is required when --logo-size in provided!')
+
+    data = {'text': 'this is a sample text', 'code': '1252'}
+    fill_color = args.fill_color if args.fill_color else 'black'
+    back_color = args.back_color if args.back_color else 'white'
+
+    if isinstance(fill_color, tuple):
+        fill_hex = '#{:02x}{:02x}{:02x}'.format(*fill_color)
+    if isinstance(back_color, tuple):
+        back_hex = '#{:02x}{:02x}{:02x}'.format(*back_color)
+
+    qr = EncodeQRCode(
+        path_name=args.path,
+        data=args.data,
+        box_size=args.box_size if args.parsize else 100,
+        border_size=args.border_size if args.border_size else 20,
+        fill_color=fill_color,
+        back_color=back_color
+    )
+    qr.create_qrcode()
+    if args.logo_path:
+        qr.add_logo(args.logo_path, logo_size=args.logo_size if args.logo_size else 100)
+    qr.save()
