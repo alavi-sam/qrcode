@@ -25,3 +25,6 @@ class EncodeQRCode:
         logo_img.thumbnail(size=(logo_size, logo_size))
         logo_position = ((self.img_qr.size[0] - logo_size)//2, (self.img_qr.size[1] - logo_size)//2)
         self.img_qr.paste(logo_img, logo_position)
+
+    def save(self):
+        self.img_qr.save(self.path_name)
