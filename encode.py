@@ -1,9 +1,7 @@
-import re
+import json
 import qrcode
 from PIL import Image
 import argparse
-
-from torch import R
 
 
 class EncodeQRCode:
@@ -39,7 +37,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='CLI commands for creating QR Code from user inputs')
 
     parser.add_argument('--path', type=str, required=True, help='Enter a path for you QR Code to be saved.')
-    parser.add_argument('--data', type=all, required=True, help='Enter your QR Code data')
+    parser.add_argument('--data-item', action='append', required=True, help='Enter your QR Code data')
     parser.add_argument('--box-size', type=int, required=False, help='QR Code box size')
     parser.add_argument('--border-size', type=int, required=False, help='QR Code border size')
     parser.add_argument('--fill-color', type=tuple, required=False, help='Pass a tuple containing RGB values for your QR Code content color')
@@ -53,7 +51,8 @@ if __name__ == '__main__':
     if not args.logo_path and args.logo_size:
         parser.error('--logo-path is required when --logo-size in provided!')
 
-    data = {'text': 'this is a sample text', 'code': '1252'}
+    data = dict(item.split('=') for item in args.data_item)
+
     fill_color = args.fill_color if args.fill_color else 'black'
     back_color = args.back_color if args.back_color else 'white'
 
@@ -64,8 +63,8 @@ if __name__ == '__main__':
 
     qr = EncodeQRCode(
         path_name=args.path,
-        data=args.data,
-        box_size=args.box_size if args.parsize else 100,
+        data=data,
+        box_size=args.box_size if args.box_size else 100,
         border_size=args.border_size if args.border_size else 20,
         fill_color=fill_color,
         back_color=back_color
