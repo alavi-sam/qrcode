@@ -29,14 +29,14 @@ class EncodeQRCode:
     def save(self):
         self.img_qr.save(self.path_name)
 
-data = {'text': 'sample_text', 'code':'1252'}
+data = {'text': 'this is a sample text', 'code': '1252'}
 fill_color = (74, 38, 40)
 back_color = (179, 194, 245)
 
 fill_hex = '#{:02x}{:02x}{:02x}'.format(*fill_color)
 back_hex = '#{:02x}{:02x}{:02x}'.format(*back_color)
 
-qr = EncodeQRCode(path_name='test.jpg', data=data, box_size=100, border_size=20, fill_color='black', back_color='white')
+qr = EncodeQRCode(path_name='test.jpg', data=data, box_size=100, border_size=20, fill_color=fill_hex, back_color=back_hex)
 qr.create_qrcode()
 qr.add_logo('facebook-logo.png', logo_size=100)
 qr.save()
