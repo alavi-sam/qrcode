@@ -1,4 +1,5 @@
 import json
+from sys import version
 import qrcode
 from PIL import Image
 import argparse
@@ -13,7 +14,8 @@ class EncodeQRCode:
         self.box_size =  box_size
         self.border_size = border_size
         self.qr_instance = qrcode.QRCode(
-            error_correction=qrcode.constants.ERROR_CORRECT_H
+            error_correction=qrcode.constants.ERROR_CORRECT_H,
+            version=1
         )
         self.img_qr = None
 
@@ -69,7 +71,10 @@ if __name__ == '__main__':
         fill_color=fill_color,
         back_color=back_color
     )
+
     qr.create_qrcode()
+
     if args.logo_path:
         qr.add_logo(args.logo_path, logo_size=args.logo_size if args.logo_size else 100)
+
     qr.save()
