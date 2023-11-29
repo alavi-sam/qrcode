@@ -24,8 +24,11 @@ class EncodeQRCode:
         self.qr_instance.make(fit=True)
         self.img_qr = self.qr_instance.make_image(fill_color=self.fill_color, back_color=self.back_color)
 
-    def add_logo(self, logo_path, logo_size):
-        logo_img = Image.open(logo_path)
+    def add_logo(self, logo, logo_size):
+        if isinstance(logo, str):
+            logo_img = Image.open(logo)
+        elif isinstance(logo, Image.Image):
+            logo_img = logo
         logo_img.thumbnail(size=(logo_size, logo_size))
         logo_position = ((self.img_qr.size[0] - logo_size)//2, (self.img_qr.size[1] - logo_size)//2)
         self.img_qr.paste(logo_img, logo_position)
@@ -50,13 +53,16 @@ def create_image(name, width, height, bgColor, text, text_size=10, alligned_widt
         w, h = draw.textsize(line, font=font)
         draw.text(((width-w)/2, current_h), line, font=font, allign='center', fill=(0,0,0))
         current_h += h + pad
-    img.save(f"{name}.jpg")
+    return img
 
 
 
 def create_from_csv(file):
     import pandas as pd
-    df = pd.read_csv()
+    df = pd.read_csv('productList.csv')
+
+
+
 
 
 
