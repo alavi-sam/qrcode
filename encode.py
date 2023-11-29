@@ -28,9 +28,10 @@ class EncodeQRCode:
     def add_logo(self, logo, logo_size):
         if isinstance(logo, str):
             logo_img = Image.open(logo)
+            logo_img.thumbnail(size=(logo_size, logo_size))
         elif isinstance(logo, Image.Image):
             logo_img = logo
-        logo_img.thumbnail(size=(logo_size, logo_size))
+            logo_img = logo_img.resize((logo_size, logo_size))
         logo_position = ((self.img_qr.size[0] - logo_size)//2, (self.img_qr.size[1] - logo_size)//2)
         self.img_qr.paste(logo_img, logo_position)
 
