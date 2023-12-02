@@ -16,7 +16,14 @@ def create_image(width, height, bgColor, text, text_size=20, alligned_width=10):
     img = Image.new(mode='RGB', size=(width, height), color=bgColor)
     draw = ImageDraw.Draw(img, mode='RGB')
 
-    current_h, pad = 35 if len(alligned_text) == 1 else 20, 5
+    if len(alligned_text) == 1:
+        current_h, pad = 35, 5
+    elif len(alligned_text) == 2:
+        current_h, pad = 20, 5
+    else:
+        current_h, pad = 5, 4
+
+    # current_h, pad = 35 if len(alligned_text) == 1 else 20, 5
     for line in alligned_text:
         w, h = draw.textsize(line, font=font)
         draw.text(((width-w)/2, current_h), line, font=font, allign='center', fill=(0,0,0))
