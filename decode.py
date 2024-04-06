@@ -31,7 +31,7 @@ class Decode:
             'orientation': qr.orientation
         } for qr in res]
 
-        return result_dicts 
+        return result_dicts
 
 
 
